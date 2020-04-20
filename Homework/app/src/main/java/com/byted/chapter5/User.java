@@ -17,6 +17,8 @@ import com.google.gson.annotations.SerializedName;
  * "username": "wwwsjdajsd"
  */
 class User {
+    @SerializedName("id")
+    public int id;
     @SerializedName("nickname")
     public String nickname;
 

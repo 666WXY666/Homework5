@@ -46,8 +46,27 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "密码不相等", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // todo 做网络请求
+                // done 做网络请求
+                apiService.register(name,password,repassword).enqueue(new Callback<UserResponse>() {
+                    @Override
+                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                        if (response.body()!=null&&response.body().user!=null){
+                            Toast.makeText(RegisterActivity.this, "注册成功！\n" +
+                                    "ID:"+ String.valueOf(response.body().user.id) +
+                                    "\n用户名:"+response.body().user.nickname,Toast.LENGTH_SHORT).show();
+                        }
+                        else if (response.body()!=null){
+                            Toast.makeText(RegisterActivity.this, "注册失败！\n" +
+                                    response.body().errorMsg,Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                        Toast.makeText(RegisterActivity.this, "网络错误！\n" +
+                                t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });
